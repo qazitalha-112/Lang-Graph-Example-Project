@@ -1,0 +1,102 @@
+{
+  "dependencies": ["./pyproject.toml"],
+  "graphs": {
+    "supervisor_agent": {
+      "path": "src.workflow:SupervisorWorkflow.get_graph_config",
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "LLM model to use",
+            "default": "gpt-4",
+            "enum": ["gpt-4", "gpt-4-turbo", "gpt-3.5-turbo"]
+          },
+          "max_iterations": {
+            "type": "integer",
+            "description": "Maximum workflow iterations",
+            "default": 10,
+            "minimum": 1,
+            "maximum": 50
+          },
+          "max_subagents": {
+            "type": "integer",
+            "description": "Maximum concurrent subagents",
+            "default": 5,
+            "minimum": 1,
+            "maximum": 20
+          },
+          "enable_tracing": {
+            "type": "boolean",
+            "description": "Enable LangSmith tracing",
+            "default": true
+          },
+          "debug_mode": {
+            "type": "boolean",
+            "description": "Enable debug mode with detailed logging",
+            "default": false
+          },
+          "tool_timeout": {
+            "type": "integer",
+            "description": "Tool execution timeout in seconds",
+            "default": 30,
+            "minimum": 5,
+            "maximum": 300
+          }
+        }
+      }
+    }
+  },
+  "env": ".env",
+  "studio": {
+    "title": "LangGraph Supervisor Agent",
+    "description": "A hierarchical AI system where a Supervisor decomposes objectives into tasks and creates specialized subagents to execute them",
+    "version": "1.0.0",
+    "author": "LangGraph Supervisor Agent Team",
+    "tags": ["supervisor", "multi-agent", "hierarchical", "task-decomposition"],
+    "visualization": {
+      "layout": "hierarchical",
+      "node_spacing": 100,
+      "edge_style": "curved",
+      "show_state_inspector": true,
+      "show_execution_timeline": true,
+      "highlight_active_nodes": true
+    },
+    "debugging": {
+      "enable_breakpoints": true,
+      "enable_step_through": true,
+      "show_intermediate_states": true,
+      "log_level": "INFO",
+      "capture_tool_outputs": true,
+      "capture_llm_calls": true
+    },
+    "environments": {
+      "development": {
+        "description": "Development environment with debug features enabled",
+        "config_overrides": {
+          "debug_mode": true,
+          "max_iterations": 5,
+          "enable_tracing": true
+        }
+      },
+      "testing": {
+        "description": "Testing environment with controlled parameters",
+        "config_overrides": {
+          "debug_mode": false,
+          "max_iterations": 3,
+          "max_subagents": 2,
+          "enable_tracing": false
+        }
+      },
+      "production": {
+        "description": "Production environment with optimized settings",
+        "config_overrides": {
+          "debug_mode": false,
+          "max_iterations": 20,
+          "max_subagents": 10,
+          "enable_tracing": true
+        }
+      }
+    }
+  }
+}
